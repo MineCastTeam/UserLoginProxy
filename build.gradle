@@ -28,10 +28,8 @@ version = '1.0'
 description = 'UserLoginProxy'
 java.sourceCompatibility = JavaVersion.VERSION_11
 
-
-
 shadowJar {
-    relocate 'space.arim.dazzleconf', 'xyz.minecast.userloginvelocity.dazzleconf'
+    relocate 'space.arim.dazzleconf', 'xyz.minecast.userloginproxy.dazzleconf'
     minimize()
     archiveFileName = "UserLoginProxy.jar"
 }
