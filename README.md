@@ -1,0 +1,2 @@
+# UserLoginProxy
+Autologin feature for [UserLogin](https://github.com/ElCholoGamer/userlogin), using [Velocity](https://velocitypowered.com/)  3.0.0+ or [BungeeCord](https://www.spigotmc.org/go/bungeecord), requires **Java 11+**.

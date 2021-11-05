@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+repositories {
+    maven {
+        name 'velocity'
+        url 'https://nexus.velocitypowered.com/repository/maven-public/'
+    }
+    maven {
+        name 'bungeecord'
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+}
+
+dependencies {
+    implementation 'space.arim.dazzleconf:dazzleconf-ext-snakeyaml:1.2.1'
+    compileOnly 'com.velocitypowered:velocity-api:3.1.0-SNAPSHOT'
+    compileOnly 'net.md-5:bungeecord-api:1.17-R0.1-SNAPSHOT'
+    annotationProcessor 'com.velocitypowered:velocity-api:3.1.0-SNAPSHOT'
+}
+
+group = 'xyz.minecast'
+version = '1.0'
+description = 'UserLoginProxy'
+java.sourceCompatibility = JavaVersion.VERSION_11
+
+
+
+shadowJar {
+    relocate 'space.arim.dazzleconf', 'xyz.minecast.userloginvelocity.dazzleconf'
+    minimize()
+    archiveFileName = "UserLoginProxy.jar"
+}
+
+jar {
+    archiveFileName = "UserLoginProxy-without-deps.jar"
+}
+
+task processSources(type: Sync) {
+    from sourceSets.main.java.srcDirs
+    inputs.property 'version', version
+    filter ReplaceTokens, tokens: [version: version]
+    into "$buildDir/src"
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: version]
+    }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+compileJava.source = processSources.outputs

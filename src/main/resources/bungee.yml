@@ -1,0 +1,5 @@
+name: UserLoginBungee
+version: '${project.version}'
+main: xyz.minecast.userloginbungee.UserLoginBungee
+description: Autologin feature for UserLogin, using BungeeCord proxy
+author: BratishkaErik
