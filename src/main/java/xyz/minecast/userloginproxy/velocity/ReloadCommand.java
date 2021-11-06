@@ -1,7 +1,7 @@
 package xyz.minecast.userloginproxy.velocity;
 
 import com.velocitypowered.api.command.SimpleCommand;
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import xyz.minecast.userloginproxy.UserLoginConfig;
 
 /*      UserLoginProxy
@@ -26,7 +26,7 @@ public class ReloadCommand implements SimpleCommand {
     @Override
     public void execute(final Invocation invocation) {
         UserLoginConfig.reloadConfig();
-        invocation.source().sendMessage(Component.text(UserLoginConfig.messageReloaded));
+        invocation.source().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(UserLoginConfig.messageReloaded));
     }
 
     @Override

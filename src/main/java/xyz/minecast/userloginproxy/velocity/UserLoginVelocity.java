@@ -80,8 +80,8 @@ public class UserLoginVelocity {
         receiver.sendPluginMessage(RETURNED_CHANNEL, out.toByteArray());
     }
 
-    public static Logger getLogger() {
-        return logger;
+    public ProxyServer getProxy() {
+        return proxy;
     }
 
 }

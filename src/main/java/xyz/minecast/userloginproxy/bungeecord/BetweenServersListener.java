@@ -1,5 +1,6 @@
 package xyz.minecast.userloginproxy.bungeecord;
 
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
@@ -46,9 +47,12 @@ public class BetweenServersListener implements Listener {
 
         if (event.getSender() instanceof ProxiedPlayer) {
             ProxiedPlayer player = (ProxiedPlayer)event.getSender();
+            String formattedConsoleMessageKicked = UserLoginConfig.consoleMessageKicked.replace("{player}", player.getDisplayName());
+            ProxyServer proxy = plugin.getProxy();
+            // send message to all players and Bungeecord console
+            proxy.broadcast(TextComponent.fromLegacyText(formattedConsoleMessageKicked));
+            // disconnect player with reason
             player.disconnect(TextComponent.fromLegacyText(UserLoginConfig.playerMessageKicked));
-            plugin.getLogger().warning(UserLoginConfig.consoleMessageKicked.replace("{player}", player.getDisplayName()));
-            return;
         }
 
     }

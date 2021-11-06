@@ -5,7 +5,8 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
 import com.velocitypowered.api.event.player.ServerPostConnectEvent;
 import com.velocitypowered.api.proxy.Player;
-import net.kyori.adventure.text.Component;
+import com.velocitypowered.api.proxy.ProxyServer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import xyz.minecast.userloginproxy.UserLoginConfig;
 
 import static xyz.minecast.userloginproxy.velocity.UserLoginVelocity.RETURNED_CHANNEL;
@@ -45,9 +46,13 @@ public class BetweenServersListener {
         event.setResult(PluginMessageEvent.ForwardResult.handled());
         if(event.getSource() instanceof Player){
             Player player = (Player)event.getSource();
-            player.disconnect(Component.text(UserLoginConfig.playerMessageKicked));
-            UserLoginVelocity.getLogger().warn(UserLoginConfig.consoleMessageKicked.replace("{player}", player.getUsername()));
-            return;
+            String formattedConsoleMessageKicked = UserLoginConfig.consoleMessageKicked.replace("{player}", player.getUsername());
+            ProxyServer proxy = plugin.getProxy();
+            // send message to all players and Velocity console
+            proxy.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(formattedConsoleMessageKicked));
+            proxy.getConsoleCommandSource().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(formattedConsoleMessageKicked));
+            // disconnect player with reason
+            player.disconnect(LegacyComponentSerializer.legacyAmpersand().deserialize(UserLoginConfig.playerMessageKicked));
         }
 
     }
